@@ -1,12 +1,86 @@
-# React + Vite
+# 📝 React 퀴즈 앱
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite 기반의 마크다운 퀴즈 앱입니다. 다양한 퀴즈를 md 파일로 관리하고, 직관적인 UI와 애니메이션으로 문제를 풀 수 있습니다.
 
-Currently, two official plugins are available:
+## 주요 기능
+- 퀴즈 선택/풀이 페이지 분리 및 라우팅
+- 객관식/빈칸형 문제 지원 (마크다운 기반)
+- 정답/오답 애니메이션 및 해설 표시
+- 문제 이동(이전/다음), 최종 점수 집계
+- 퀴즈 데이터/메타 정보 파일 분리 관리
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 폴더 구조
+```
+quiz-vite/
+├─ src/
+│  ├─ components/
+│  │    ├─ QuizSelect.jsx   # 퀴즈 선택 페이지
+│  │    └─ QuizSolve.jsx    # 퀴즈 풀이 페이지
+│  ├─ data/
+│  │    ├─ meta.json        # 퀴즈 메타 정보
+│  │    ├─ it.md            # 퀴즈 데이터 (마크다운)
+│  │    └─ ...
+│  ├─ App.jsx
+│  └─ ...
+├─ public/
+├─ package.json
+└─ README.md
+```
 
-## Expanding the ESLint configuration
+## 실행 방법
+1. 의존성 설치
+   ```bash
+   npm install
+   ```
+2. 개발 서버 실행
+   ```bash
+   npm run dev
+   ```
+3. 브라우저에서 [http://localhost:5173](http://localhost:5173) 접속
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+## 퀴즈 데이터 작성법
+- `src/data/` 폴더에 `.md` 파일로 문제를 작성합니다.
+- 각 퀴즈 파일은 `meta.json`에 등록해야 합니다.
+
+### meta.json 예시
+```json
+{
+  "quizzes": [
+    {
+      "file": "it.md",
+      "title": "IT 상식 퀴즈",
+      "description": "IT와 컴퓨터에 관한 문제 모음",
+      "extra": "최신 트렌드 반영"
+    }
+  ]
+}
+```
+
+### 퀴즈 마크다운 예시 (it.md)
+```
+1. 다음 중 HTTP 상태 코드 404의 의미는?
+A. 서버 오류
+B. 요청 성공
+C. 페이지를 찾을 수 없음
+D. 인증 필요
+
+정답: C
+해설: 404는 요청한 페이지를 찾을 수 없음을 의미합니다.
+
+2. 대한민국의 수도는 ___ 입니다.
+
+정답: 서울
+해설: 대한민국의 수도는 서울입니다.
+```
+
+## 스크린샷 예시
+> (실행 후 캡처 이미지를 첨부해 주세요)
+
+---
+
+## 기여 방법
+- 이 저장소는 자유롭게 포크/수정/PR 가능합니다.
+- 버그/개선 제안은 이슈로 남겨주세요.
+
+## 라이선스
+MIT
