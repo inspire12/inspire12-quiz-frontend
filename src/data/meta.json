@@ -1,0 +1,22 @@
+{
+    "quizzes": [
+        {
+            "file": "mysql-basic.md",
+            "title": "mysql 기본 퀴즈",
+            "description": "mysql 기본 퀴즈 모음",
+            "extra": "난이도: 쉬움"
+        },
+        {
+        "file": "mysql.md",
+        "title": "mysql 퀴즈",
+        "description": "mysql 퀴즈 모음",
+        "extra": "난이도: 어려움"
+      },
+      {
+        "file": "it.md",
+        "title": "IT 상식 퀴즈",
+        "description": "IT와 컴퓨터에 관한 문제 모음",
+        "extra": "최신 트렌드 반영"
+      }
+    ]
+  }
