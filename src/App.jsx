@@ -55,7 +55,7 @@ function QuizSolvePage({ quizList }) {
   useEffect(() => {
     if (!quiz) return;
     setLoading(true);
-    fetch(`/src/data/${quiz.file}`)
+    fetch(`/data/${quiz.file}`)
       .then(res => res.text())
       .then(text => {
         setQuestions(parseQuizMd(text))
@@ -81,7 +81,7 @@ function App() {
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/src/data/meta.json')
+    fetch('/data/meta.json')
       .then(res => res.json())
       .then(data => {
         setQuizList(data.quizzes)
