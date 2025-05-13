@@ -10,6 +10,7 @@ function QuizSolve({ quiz, questions, onBack }) {
   const [score, setScore] = useState(0);
   const [showFinal, setShowFinal] = useState(false);
   const [answered, setAnswered] = useState([]);
+  const [showExplanation, setShowExplanation] = useState(false);
 
   // 퀴즈가 바뀌면 상태 초기화
   useEffect(() => {
@@ -21,6 +22,7 @@ function QuizSolve({ quiz, questions, onBack }) {
     setScore(0);
     setShowFinal(false);
     setAnswered(Array(questions.length).fill(false));
+    setShowExplanation(false);
   }, [quiz, questions]);
 
   // 현재 문제 정보
@@ -62,6 +64,7 @@ function QuizSolve({ quiz, questions, onBack }) {
     setUserAnswer('');
     setShowResult(false);
     setIsCorrect(null);
+    setShowExplanation(false);
     if (isLast) {
       setShowFinal(true);
     } else {
@@ -74,6 +77,7 @@ function QuizSolve({ quiz, questions, onBack }) {
     setUserAnswer('');
     setShowResult(false);
     setIsCorrect(null);
+    setShowExplanation(false);
     setCurrentIdx((idx) => Math.max(idx - 1, 0));
   };
 
@@ -144,35 +148,65 @@ function QuizSolve({ quiz, questions, onBack }) {
   );
 
   // 정답/오답 결과 메시지
-  const renderResult = () => (
-    <div className={`quiz-result ${checkCorrect(userAnswer) ? 'correct' : 'wrong'}`}>
-      {checkCorrect(userAnswer) ? '정답입니다!' : '오답입니다!'}
-      <div className="quiz-explanation">{q.explanation}</div>
-      <button className="start-btn" onClick={handleNext}>
-        {isLast ? '결과 보기' : '다음 문제'}
-      </button>
-    </div>
-  );
+  const renderResult = () => {
+    const isAnswerCorrect = checkCorrect(userAnswer);
+    return (
+      <div className={`quiz-result ${isAnswerCorrect ? 'correct' : 'wrong'}`}>
+        <div className="result-header">
+          <span className="result-text">
+            {isAnswerCorrect ? '정답입니다!' : '오답입니다!'}
+          </span>
+          <button 
+            className="explanation-toggle"
+            onClick={() => setShowExplanation(!showExplanation)}
+          >
+            해설 {showExplanation ? '접기' : '보기'} {showExplanation ? '▼' : '▶'}
+          </button>
+        </div>
+        
+        <div className={`explanation-content ${showExplanation ? 'expanded' : ''}`}>
+          <div className="quiz-explanation">{q.explanation}</div>
+        </div>
+
+        <button className="start-btn" onClick={handleNext} style={{ marginTop: '1rem' }}>
+          {isLast ? '결과 보기' : '다음 문제'}
+        </button>
+      </div>
+    );
+  };
 
   return (
     <div className="main-container">
-      <h1>{quiz?.title || quiz?.file.replace('.md', '')}</h1>
-      <div className={`quiz-question-box ${animClass}`}>
-        <div className="quiz-q">{q.question}</div>
-        {q.type === 'choice' ? renderChoices() : renderBlank()}
-        {showResult && renderResult()}
-      </div>
-      <div style={{ display: 'flex', gap: '1rem', justifyContent: 'center', marginTop: '1.5rem' }}>
-        <button className="start-btn" onClick={handlePrev} disabled={isFirst}>
-          이전 문제
-        </button>
-        <button className="start-btn" onClick={handleNext} disabled={isLast}>
-          다음 문제
+      <div className="quiz-header">
+        <h1>{quiz?.title || quiz?.file.replace('.md', '')}</h1>
+        <button className="back-btn" onClick={onBack}>
+          <span className="back-icon">✕</span>
         </button>
       </div>
-      <button className="start-btn" style={{ marginTop: '2rem' }} onClick={onBack}>
-        돌아가기
-      </button>
+      
+      <div className="quiz-navigation">
+        <button 
+          className={`nav-btn prev-btn ${isFirst ? 'disabled' : ''}`} 
+          onClick={handlePrev} 
+          disabled={isFirst}
+        >
+          ←
+        </button>
+        
+        <div className={`quiz-question-box ${animClass}`}>
+          <div className="quiz-q">{q.question}</div>
+          {q.type === 'choice' ? renderChoices() : renderBlank()}
+          {showResult && renderResult()}
+        </div>
+
+        <button 
+          className={`nav-btn next-btn ${isLast ? 'disabled' : ''}`} 
+          onClick={handleNext} 
+          disabled={isLast}
+        >
+          →
+        </button>
+      </div>
     </div>
   );
 }

@@ -3,39 +3,7 @@ import './App.css'
 import QuizSelect from './components/QuizSelect'
 import QuizSolve from './components/QuizSolve'
 import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
-
-function parseQuizMd(md) {
-  // 문제별로 분리
-  const blocks = md.split(/\n(?=\d+\. )/g).map(b => b.trim()).filter(Boolean)
-  return blocks.map(block => {
-    // 문제, 선택지, 정답, 해설 추출
-    const lines = block.split('\n').map(l => l.trim()).filter(Boolean)
-    const questionLine = lines[0]
-    const choices = []
-    let answer = ''
-    let explanation = ''
-    let type = 'choice'
-    for (let i = 1; i < lines.length; i++) {
-      if (/^[A-D]\. /.test(lines[i])) {
-        choices.push(lines[i])
-      } else if (lines[i].startsWith('정답:')) {
-        answer = lines[i].replace('정답:', '').trim()
-      } else if (lines[i].startsWith('해설:')) {
-        explanation = lines[i].replace('해설:', '').trim()
-      } else if (lines[i].includes('___') || lines[i].includes('□')) {
-        type = 'blank'
-      }
-    }
-    if (choices.length === 0) type = 'blank'
-    return {
-      question: questionLine,
-      choices,
-      answer,
-      explanation,
-      type
-    }
-  })
-}
+import MdToJsonConverter from './components/MdToJsonConverter.jsx'
 
 function QuizSelectPage({ quizList }) {
   const navigate = useNavigate();
@@ -55,10 +23,10 @@ function QuizSolvePage({ quizList }) {
   useEffect(() => {
     if (!quiz) return;
     setLoading(true);
-    fetch(`/data/${quiz.file}`)
-      .then(res => res.text())
-      .then(text => {
-        setQuestions(parseQuizMd(text))
+    fetch(`/data/${quiz.file.replace('.md', '.json')}`)
+      .then(res => res.json())
+      .then(data => {
+        setQuestions(data)
         setLoading(false)
       })
       .catch(() => {
@@ -98,12 +66,15 @@ function App() {
   }
 
   return (
-    <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<QuizSelectPage quizList={quizList} />} />
-        <Route path="/quiz/:quizId" element={<QuizSolvePage quizList={quizList} />} />
-      </Routes>
-    </BrowserRouter>
+    <div className="app">
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<QuizSelectPage quizList={quizList} />} />
+          <Route path="/quiz/:quizId" element={<QuizSolvePage quizList={quizList} />} />
+          <Route path="/convert" element={<MdToJsonConverter />} />
+        </Routes>
+      </BrowserRouter>
+    </div>
   )
 }
 
