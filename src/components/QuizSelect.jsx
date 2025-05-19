@@ -15,7 +15,7 @@ function QuizSelect({ quizList, onSelect }) {
   const observerRef = useRef();
   const lastGroupRef = useRef();
 
-  const grouped = groupBy(quizList, 'extra');
+  const grouped = groupBy(quizList, 'group');
   const groupEntries = Object.entries(grouped);
 
   useEffect(() => {

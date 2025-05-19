@@ -1,0 +1,62 @@
+[
+    {
+      "question": "1. STOMP 프로토콜에 대한 설명 중 틀린 것은?",
+      "choices": [
+        "A. STOMP는 WebSocket 위에서 동작하는 메시지 프로토콜임",
+        "B. STOMP는 브로커와의 호환성이 뛰어나 메시지 라우팅에 적합함",
+        "C. STOMP는 HTTP 요청/응답 기반 구조로 동작함",
+        "D. STOMP는 텍스트 기반 메시지 규격을 제공함"
+      ],
+      "answer": "C",
+      "explanation": "STOMP는 WebSocket 위에서 동작하는 Pub/Sub 기반의 메시지 프로토콜로, HTTP와는 무관함. HTTP는 핸드셰이크에만 쓰이고 이후는 STOMP 전용 메시지 흐름을 따름.",
+      "type": "choice"
+    },
+    {
+      "question": "2. WebSocket의 단점을 보완하기 위한 확장 기술에 대한 설명 중 틀린 것은?",
+      "choices": [
+        "A. STOMP는 메시지 구조화, 라우팅 등을 제공하여 개발 부담을 줄여줌",
+        "B. SockJS는 브라우저에서 WebSocket 미지원 시 fallback을 자동 처리함",
+        "C. STOMP는 클라이언트-서버 간 연결 상태를 지속적으로 감시하는 기능도 포함함",
+        "D. WebSocket은 기본적으로 인증과 메시지 라우팅 기능이 포함되어 있음"
+      ],
+      "answer": "D",
+      "explanation": "WebSocket은 연결 및 데이터 전송만 제공하고, 인증, 라우팅, 세션 관리 등은 직접 구현해야 하는 부담이 있음. STOMP나 SockJS 같은 기술로 보완함.",
+      "type": "choice"
+    },
+    {
+      "question": "3. Spring에서 STOMP 메시지 흐름에 대한 설명 중 틀린 것은?",
+      "choices": [
+        "A. 클라이언트가 메시지를 전송하면 @MessageMapping 핸들러가 호출됨",
+        "B. @SendTo 어노테이션은 메시지를 지정된 topic으로 전달함",
+        "C. SimpleBroker는 클라이언트 메시지를 처리하고, @MessageMapping으로 전달함",
+        "D. simpMessagingTemplate은 코드상에서 직접 특정 구독자에게 메시지를 전송할 수 있음"
+      ],
+      "answer": "C",
+      "explanation": "SimpleBroker는 서버 측 핸들러에서 처리된 메시지를 구독자에게 전달하는 역할을 함. 반대로 클라이언트 → 서버 메시지는 @MessageMapping 핸들러가 처리함.",
+      "type": "choice"
+    },
+    {
+      "question": "4. SockJS의 역할에 대한 설명 중 틀린 것은?",
+      "choices": [
+        "A. SockJS는 클라이언트-서버 간 WebSocket이 안 될 때 fallback 경로를 제공함",
+        "B. SockJS는 WebSocket과 동일한 API를 제공하여 코드 호환성을 유지함",
+        "C. SockJS는 메시지 처리 방식(STOMP)의 표준을 정해주는 역할을 한다",
+        "D. SockJS는 /info 요청 등을 통해 연결 가능 여부를 사전 점검함"
+      ],
+      "answer": "C",
+      "explanation": "SockJS는 연결 관리를 위한 기술이며, 메시지 포맷이나 라우팅과 같은 메시지 처리는 STOMP의 역할임.",
+      "type": "choice"
+    },
+    {
+      "question": "5. Spring에서 WebSocket + STOMP를 사용할 때의 구성 설명 중 틀린 것은?",
+      "choices": [
+        "A. /app prefix는 클라이언트가 서버로 메시지를 보낼 때 사용함",
+        "B. /topic prefix는 서버가 클라이언트에게 메시지를 보낼 때 사용함",
+        "C. @MessageMapping은 클라이언트의 메시지를 받는 엔드포인트를 의미함",
+        "D. @Controller는 메시지 전송 브로커(SimpleBroker)의 역할을 수행함"
+      ],
+      "answer": "D",
+      "explanation": "@Controller는 메시지를 처리하는 애플리케이션 핸들러일 뿐, 브로커가 아님. 메시지를 실제로 전송하는 역할은 SimpleBroker 또는 외부 브로커가 수행함.",
+      "type": "choice"
+    }
+  ]

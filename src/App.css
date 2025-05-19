@@ -345,7 +345,7 @@ body::-webkit-scrollbar {
 .quiz-explanation {
   font-size: 1.05rem;
   line-height: 1.7;
-  color: var(--text-main);
+  color: #111 !important;
   padding: 1.2rem;
   background: var(--bg-primary);
   border-radius: 8px;
@@ -354,25 +354,25 @@ body::-webkit-scrollbar {
 
 .quiz-explanation.correct {
   background: #e7fbe9;
-  color: #15803d;
+  color: #111 !important;
   border-color: #22c55e;
 }
 
 .quiz-explanation.wrong {
   background: #fbe7e7;
-  color: #b91c1c;
+  color: #111 !important;
   border-color: #ef4444;
 }
 
 .app.dark .quiz-explanation.correct {
   background: #193c2b;
-  color: #4ade80;
+  color: #111 !important;
   border-color: #22c55e;
 }
 
 .app.dark .quiz-explanation.wrong {
   background: #3c1919;
-  color: #f87171;
+  color: #111 !important;
   border-color: #ef4444;
 }
 

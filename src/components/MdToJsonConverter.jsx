@@ -26,7 +26,7 @@ function parseQuizMd(md) {
 }
 
 // md 파일에서 meta 정보 추출 (파일명 기반)
-function extractMetaFromMd(file, md) {
+function extractMetaFromMd(file, md, group) {
   // 파일명에서 .md 제거
   const base = file.name.replace(/\.md$/, '');
   // 첫 줄이 # 제목이면 title, 아니면 파일명
@@ -40,12 +40,15 @@ function extractMetaFromMd(file, md) {
     file: file.name,
     title,
     description: '',
-    extra: ''
+    extra: '',
+    group: group || '기타'
   };
 }
 
 export default function MdToJsonConverter() {
   const [selectedFiles, setSelectedFiles] = useState([]);
+  const [jsonPreview, setJsonPreview] = useState('');
+  const [jsonFileName, setJsonFileName] = useState('');
 
   // 단일 파일 변환
   const handleFile = async (e) => {
@@ -54,19 +57,39 @@ export default function MdToJsonConverter() {
     setSelectedFiles([]);
     const text = await file.text();
     const json = parseQuizMd(text);
-    const blob = new Blob([JSON.stringify(json, null, 2)], { type: 'application/json' });
+    setJsonPreview(JSON.stringify(json, null, 2));
+    setJsonFileName(file.name.replace(/\.md$/, '.json'));
+  };
+
+  // json 다운로드 버튼
+  const handleDownloadJson = () => {
+    if (!jsonPreview || !jsonFileName) return;
+    const blob = new Blob([jsonPreview], { type: 'application/json' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
-    a.download = file.name.replace(/\.md$/, '.json');
+    a.download = jsonFileName;
     a.click();
     URL.revokeObjectURL(url);
+  };
+
+  // json 복사 버튼
+  const handleCopyJson = async () => {
+    if (!jsonPreview) return;
+    try {
+      await navigator.clipboard.writeText(jsonPreview);
+      alert('JSON이 복사되었습니다!');
+    } catch {
+      alert('복사 실패!');
+    }
   };
 
   // 여러 파일 한 번에 변환 (meta.json도 생성)
   const handleMultiFiles = async (e) => {
     const files = Array.from(e.target.files);
     setSelectedFiles(files);
+    setJsonPreview('');
+    setJsonFileName('');
   };
 
   // 실행 버튼 클릭 시 실제 변환 및 다운로드
@@ -84,8 +107,10 @@ export default function MdToJsonConverter() {
       a.download = file.name.replace(/\.md$/, '.json');
       a.click();
       URL.revokeObjectURL(url);
-      // meta 정보 추출
-      metaArr.push(extractMetaFromMd(file, text));
+      // meta 정보 추출 (group명 입력)
+      let group = window.prompt(`${file.name}의 그룹명을 입력하세요. (예: DB, 상식 등)`, '');
+      if (!group) group = '기타';
+      metaArr.push(extractMetaFromMd(file, text, group));
     }
     // meta.json 생성 및 다운로드
     const metaJson = { quizzes: metaArr };
@@ -107,6 +132,26 @@ export default function MdToJsonConverter() {
           <input type="file" accept=".md" onChange={handleFile} />
         </label>
       </div>
+      {jsonPreview && (
+        <div style={{ width: '100%', marginBottom: 12 }}>
+          <div style={{ fontSize: '0.97rem', color: '#333', marginBottom: 6 }}>
+            변환 결과 미리보기
+          </div>
+          <textarea
+            style={{ width: '100%', minHeight: 180, fontSize: '1rem', fontFamily: 'monospace', marginBottom: 8, resize: 'vertical' }}
+            value={jsonPreview}
+            readOnly
+          />
+          <div style={{ display: 'flex', gap: 8, marginBottom: 8 }}>
+            <button className="start-btn" style={{ minWidth: 90 }} onClick={handleCopyJson}>
+              JSON 복사
+            </button>
+            <button className="start-btn" style={{ minWidth: 90 }} onClick={handleDownloadJson}>
+              JSON 다운로드
+            </button>
+          </div>
+        </div>
+      )}
       <div style={{ marginBottom: '1rem' }}>
         <label>
           <b>여러 파일 한 번에 변환:</b> 
