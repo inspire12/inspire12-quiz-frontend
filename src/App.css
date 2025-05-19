@@ -60,8 +60,7 @@ body::-webkit-scrollbar {
 }
 
 .main-container {
-  max-width: 800px;
-  margin: 0 auto;
+  /*max-width: 800px;*/
   padding: 2rem 2.5rem 2rem 2.5rem;
   display: flex;
   flex-direction: column;
@@ -69,8 +68,7 @@ body::-webkit-scrollbar {
   background: var(--card-bg);
   border-radius: 16px;
   box-shadow: 0 4px 16px var(--shadow-color);
-  margin-top: 2rem;
-  width: 100%;
+  margin: 2rem auto 0;
   max-height: calc(100vh - 4rem);
   overflow: hidden;
   position: relative;
@@ -85,7 +83,7 @@ body::-webkit-scrollbar {
   font-size: 2rem;
   font-weight: 700;
   color: var(--text-title);
-  margin-bottom: 2rem;
+  margin-bottom: 0.5rem;
   letter-spacing: -0.02em;
 }
 
@@ -169,25 +167,41 @@ body::-webkit-scrollbar {
   display: block;
 }
 
+.quiz-header-close {
+  width: 96%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding-bottom: 0.5rem;
+  position: sticky;
+  top: 0;
+  right: 10px;
+  z-index: 10;
+}
+
+
 .quiz-header {
-  width: 100%;
+  width: 95%;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding-bottom: 1.5rem;
   border-bottom: 1px solid var(--border-color);
   position: sticky;
   top: 0;
   z-index: 10;
+  padding-left: 12px;
 }
 
 .quiz-navigation {
   display: flex;
+  max-height: 80vh;
   align-items: center;
-  gap: 1rem;
+  justify-content: flex-start;
   width: 100%;
+  box-sizing: border-box;
   flex: 1;
   overflow: hidden;
+  overflow-y: clip;
   padding: 1rem 0;
 }
 
@@ -196,7 +210,7 @@ body::-webkit-scrollbar {
   width: 100%;
   /* background: white; */
   border-radius: 12px;
-  padding: 1.5rem;
+  padding: 1rem;
   margin: 0;
   overflow-y: auto;
   max-height: calc(100vh - 12rem);
@@ -472,75 +486,102 @@ body::-webkit-scrollbar {
 /* 모바일 환경 (767px 이하) */
 @media (max-width: 767px) {
   #root {
-    padding: 1rem;
+    padding: 0.5rem;
   }
-
   .main-container {
-    padding: 1.2rem 0.7rem 1.2rem 0.7rem;
+    padding: 0.7rem 0.3rem 0.7rem 0.3rem;
     margin: 0;
+    border-radius: 8px;
+    box-shadow: none;
+    min-height: 100vh;
   }
-
   .main-container h1 {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-  }
-
-  .quiz-q {
     font-size: 1.15rem;
-    margin-bottom: 1.5rem;
+    margin-bottom: 1rem;
   }
-
+  .quiz-q {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    font-weight: 500;
+  }
   .quiz-choice-btn {
-    font-size: 1rem;
-    padding: 1rem 1.2rem;
+    font-size: 0.98rem;
+    padding: 0.7rem 0.7rem;
+    border-radius: 6px;
+    margin-bottom: 0.4rem;
+    box-shadow: none;
+    border-width: 1.5px;
+    background: #f8fafc;
+    text-align: left;
   }
-
-  .quiz-explanation {
-    font-size: 1rem;
-    padding: 1rem;
-    line-height: 1.6;
+  .quiz-choice-btn:last-child {
+    margin-bottom: 0;
   }
-
-  .result-text {
-    font-size: 1.1rem;
+  .quiz-choices {
+    gap: 0.4rem;
+    margin-bottom: 0.7rem;
   }
-
-  .theme-toggle {
-    top: 0.7rem;
-    right: 0.7rem;
-    width: 36px;
-    height: 36px;
-    font-size: 1.2rem;
-  }
-
-  .quiz-item {
-    max-width: 100%;
-    padding: 1rem 0.7rem 1rem 0.7rem;
-  }
-
-  .quiz-list {
-    padding-right: 0.2rem;
+  .quiz-blank-box {
+    flex-direction: column;
+    gap: 0.5rem;
     align-items: stretch;
+    margin: 0.7rem 0;
   }
-
-  .quiz-group-header {
-    padding: 0.8rem 0.7rem 0.8rem 0.7rem;
+  .quiz-blank-input {
+    font-size: 1rem;
+    padding: 1.1rem 0.7rem;
+    border-radius: 6px;
+    width: 100%;
+    box-sizing: border-box;
   }
-
-  .quiz-group-content {
-    padding: 0 0.2rem;
-    margin-bottom: 0.5rem;
+  .quiz-question-box {
+    padding: 0.5rem;
+    border-radius: 8px;
+    margin: 0;
+    max-height: unset;
   }
-
+  .quiz-result {
+    margin-top: 1rem;
+    padding: 0.7rem;
+    border-radius: 6px;
+    font-size: 0.98rem;
+  }
+  .result-header {
+    margin-bottom: 0.3rem;
+  }
+  .result-text {
+    font-size: 1rem;
+  }
+  .explanation-toggle {
+    font-size: 0.95rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 5px;
+  }
+  .quiz-explanation {
+    font-size: 0.95rem;
+    padding: 0.7rem;
+    border-radius: 5px;
+  }
+  .quiz-header {
+    margin-bottom: 0.7rem;
+    border-bottom-width: 1px;
+  }
   .quiz-navigation {
-    gap: 0.2rem;
+    max-height: 80vh;
+    align-items: center;
+    justify-content: flex-start;
     padding: 0.2rem 0;
-  }
+    box-sizing: border-box;
+    z-index: 100;
+    box-shadow: 0 -2px 8px rgba(0,0,0,0.04);
+    /*border-top: 1px solid #e5e7eb;*/
 
+    overflow-y: auto;
+  }
   .nav-btn {
-    min-width: unset;
-    min-height: unset;
-    font-size: 1.2rem;
+    min-width: 44px;
+    min-height: 44px;
+    font-size: 1.3rem;
     padding: 0.2rem 0.5rem;
     background: none;
     border: none;
@@ -549,32 +590,55 @@ body::-webkit-scrollbar {
     margin: 0 0.1rem;
     box-shadow: none;
     transition: background 0.2s, color 0.2s;
+    touch-action: manipulation;
   }
-
   .nav-btn:active {
     background: #e5e7eb;
     color: #1746a2;
   }
-
   .nav-btn.disabled {
     background: none;
     color: #b6c3e2;
     cursor: not-allowed;
   }
-
-  .quiz-blank-box {
-    flex-direction: column;
-    gap: 0.7rem;
-    align-items: stretch;
-  }
-
-  .quiz-blank-input {
+  .start-btn {
     font-size: 1rem;
-    padding: 0.9rem;
+    padding: 0.7rem 1.1rem;
+    border-radius: 6px;
+    min-width: 70px;
+    margin-top: 0.5rem;
   }
-
-  .quiz-question-box {
-    padding: 0.7rem;
+  .quiz-list {
+    padding-right: 0;
+    align-items: stretch;
+    gap: 0.5rem;
+  }
+  .quiz-item {
+    max-width: 100%;
+    padding: 0.7rem 0.5rem 0.7rem 0.5rem;
+    border-radius: 7px;
+    margin-bottom: 0.5rem;
+    box-shadow: none;
+    gap: 0.7rem;
+  }
+  .quiz-info strong {
+    font-size: 1rem;
+  }
+  .quiz-info span {
+    font-size: 0.92rem;
+  }
+  .quiz-group-header {
+    padding: 0.6rem 0.5rem 0.6rem 0.5rem;
+    font-size: 1rem;
+    border-radius: 6px;
+  }
+  .quiz-group-content {
+    padding: 0 0.1rem;
+    margin-bottom: 0.3rem;
+  }
+  .load-more {
+    padding: 0.5rem;
+    font-size: 0.95rem;
   }
 }
 
@@ -591,6 +655,10 @@ body::-webkit-scrollbar {
 
   .main-container h1 {
     color: #90cdf4;
+    word-break: keep-all;      /* 한글: 글자 단위 강제 줄바꿈 금지 */
+    overflow-wrap: anywhere;   /* 정말 넘칠 때만 단어 단위로 줄바꿈 */
+    white-space: collapse;
+    font-size: 24px;
   }
 
   .quiz-q {
@@ -733,7 +801,7 @@ body::-webkit-scrollbar {
 
 .main-container.quiz-page {
   max-width: none;
-  width: 100vw;
+  width: 80vw;
   margin: 0;
   border-radius: 0;
   box-shadow: none;

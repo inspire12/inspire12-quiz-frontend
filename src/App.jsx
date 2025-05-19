@@ -1,62 +1,71 @@
 import React, { useState, useEffect } from 'react'
 import './App.css'
 import QuizSelect from './components/QuizSelect'
-import QuizSolve from './components/QuizSolve'
-import { BrowserRouter, Routes, Route, useNavigate, useLocation } from 'react-router-dom'
-import MdToJsonConverter from './components/MdToJsonConverter.jsx'
+import {BrowserRouter, Routes, Route, useNavigate, useLocation} from 'react-router-dom'
+import supabase from './api/supabaseClient'
+import QuizSolve from "./components/QuizSolve.jsx";
 
-function QuizSelectPage({ quizList }) {
+function QuizSelectPage({ quizBookList }) {
   const navigate = useNavigate();
   const handleSelect = (quiz) => {
-    navigate(`/quiz/${quiz.file.replace('.md','')}`, { state: { quiz } });
+    navigate(`/quiz/${quiz.id}`, { state: { quiz } });
   };
-  return <QuizSelect quizList={quizList} onSelect={handleSelect} />;
+  return <QuizSelect quizBookList={quizBookList} onSelect={handleSelect} />;
 }
 
-function QuizSolvePage({ quizList }) {
+function QuizSolvePage({ quizBookList }) {
   const location = useLocation();
   const navigate = useNavigate();
-  const quiz = location.state?.quiz || quizList.find(q => `/quiz/${q.file.replace('.md','')}` === location.pathname);
-  const [questions, setQuestions] = React.useState([]);
-  const [loading, setLoading] = React.useState(true);
+  const quizBook = location.state?.quizzes || quizBookList.find(q => `/quiz/${q.id}` === location.pathname);
+  const [quiz, setQuiz] = React.useState([]);
+  const [choicesList, setChoicesList] = React.useState([]);
+  const [loading_quiz, setQuizLoading] = React.useState(true);
+  const [loading_choice, setChoiceLoading] = React.useState(true);
 
   useEffect(() => {
-    if (!quiz) return;
-    setLoading(true);
-    fetch(`/data/${quiz.file.replace('.md', '.json')}`)
-      .then(res => res.json())
-      .then(data => {
-        setQuestions(data)
-        setLoading(false)
-      })
-      .catch(() => {
-        setQuestions([])
-        setLoading(false)
-      })
-  }, [quiz])
+    if (!quizBook) return;
+    setQuizLoading(true);
+    setChoiceLoading(true)
+    supabase
+        .from('quizzes')
+        .select('*')
+        .eq('quiz_book_id', quizBook.id)
+        .order('sort_order')
+        .then(({ data, error }) => {
+          setQuiz(data || []);
+          setQuizLoading(false);
+        });
+    supabase
+        .from('quiz_choices')
+        .select('*')
+        .eq('quiz_book_id', quizBook.id)
+        .order('sort_order')
+        .then(({ data, error }) => {
+          setChoicesList(data || []);
+          setChoiceLoading(false);
+        });
+  }, [quizBook]);
 
-  if (!quiz || loading) return <div className="main-container">로딩 중...</div>;
+
+  if (!(!loading_quiz && !loading_choice)) return <div className="main-container quiz-page">로딩 중...</div>;
 
   const handleBack = () => {
     navigate('/');
   };
-
-  return <QuizSolve quiz={quiz} questions={questions} onBack={handleBack} />;
+  return <QuizSolve quizzes={quiz} choicesList={choicesList} onBack={handleBack} />;
 }
 
+
 function App() {
-  const [quizList, setQuizList] = useState([])
+  const [quizBookList, setQuizBookList] = useState([])
   const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    fetch('/data/meta.json')
-      .then(res => res.json())
-      .then(data => {
-        setQuizList(data.quizzes)
-        setLoading(false)
-      })
-      .catch(() => {
-        setQuizList([])
+    supabase
+      .from('quiz_books')
+      .select('*')
+      .then(({ data, error }) => {
+        setQuizBookList(data || [])
         setLoading(false)
       })
   }, [])
@@ -69,9 +78,8 @@ function App() {
     <div className="app">
       <BrowserRouter>
         <Routes>
-          <Route path="/" element={<QuizSelectPage quizList={quizList} />} />
-          <Route path="/quiz/:quizId" element={<QuizSolvePage quizList={quizList} />} />
-          <Route path="/convert" element={<MdToJsonConverter />} />
+          <Route path="/" element={<QuizSelectPage quizBookList={quizBookList}/>} />
+          <Route path="/quiz/:quizId" element={<QuizSolvePage quizBookList={quizBookList} />} />
         </Routes>
       </BrowserRouter>
     </div>

@@ -1,6 +1,15 @@
-import React, { useState, useEffect, useCallback } from 'react';
+import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react';
 
-function QuizSolve({ quiz, questions, onBack }) {
+function groupBy(arr, key) {
+  return arr.reduce((acc, item) => {
+    const group = item[key] || '기타';
+    if (!acc[group]) acc[group] = [];
+    acc[group].push(item);
+    return acc;
+  }, {});
+}
+
+function QuizSolve({ quizzes, choicesList, onBack }) {
   // 상태 정의
   const [currentIdx, setCurrentIdx] = useState(0);
   const [userAnswer, setUserAnswer] = useState('');
@@ -11,35 +20,38 @@ function QuizSolve({ quiz, questions, onBack }) {
   const [showFinal, setShowFinal] = useState(false);
   const [answered, setAnswered] = useState([]);
   const [showExplanation, setShowExplanation] = useState(false);
+  const renderCnt = useRef(0);
+  // quiz, choices를 계산된 값으로 사용
+  const quiz = quizzes[currentIdx];
+  const groupedChoices = useMemo(() => groupBy(choicesList, 'quiz_id'), [choicesList]);
+  const choices = groupedChoices[quiz?.id] || [];
+
+  console.log('렌더', ++renderCnt.current);
 
   // 퀴즈가 바뀌면 상태 초기화
   useEffect(() => {
-    setCurrentIdx(0);
     setUserAnswer('');
     setShowResult(false);
     setIsCorrect(null);
     setAnimClass('');
-    setScore(0);
-    setShowFinal(false);
-    setAnswered(Array(questions.length).fill(false));
     setShowExplanation(false);
-  }, [quiz, questions]);
+  }, [currentIdx]);
 
   // 현재 문제 정보
-  const q = questions[currentIdx];
-  const isLast = currentIdx === questions.length - 1;
+  const isLast = currentIdx === quizzes.length - 1;
   const isFirst = currentIdx === 0;
 
   // 정답 판정 함수
   const checkCorrect = useCallback(
     (answer) => {
-      if (q.type === 'choice') {
-        return answer.trim().toUpperCase() === q.answer.trim().toUpperCase();
+      if (!quiz) return false;
+      if (quiz.type === 'choice') {
+        return answer.trim().toUpperCase() === quiz.answer.trim().toUpperCase();
       } else {
-        return answer.trim() === q.answer.trim();
+        return answer.trim() === quiz.answer.trim();
       }
     },
-    [q]
+    [quiz]
   );
 
   // 정답 제출
@@ -68,7 +80,7 @@ function QuizSolve({ quiz, questions, onBack }) {
     if (isLast) {
       setShowFinal(true);
     } else {
-      setCurrentIdx((idx) => Math.min(idx + 1, questions.length - 1));
+      setCurrentIdx((idx) => Math.min(idx + 1, quizzes.length - 1));
     }
   };
 
@@ -87,7 +99,7 @@ function QuizSolve({ quiz, questions, onBack }) {
       <div className="main-container">
         <h1>퀴즈 결과</h1>
         <div className="quiz-question-box" style={{ fontSize: '1.3rem', fontWeight: 600, color: '#3b82f6', marginBottom: '2rem' }}>
-          총 {questions.length}문제 중 {score}개 정답!
+          총 {quizzes.length}문제 중 {score}개 정답!
         </div>
         <button className="start-btn" onClick={onBack}>
           다시 선택하기
@@ -96,13 +108,18 @@ function QuizSolve({ quiz, questions, onBack }) {
     );
   }
 
+  if (!Array.isArray(quizzes) || quizzes.length === 0 || !quiz) {
+    return <div className="main-container">퀴즈를 불러오는 중입니다...</div>
+  }
   // 객관식 선택지 렌더링
   const renderChoices = () => (
     <div className="quiz-choices">
-      {q.choices.map((c) => {
-        const opt = c[0];
+      {(choices.map((c, idx) => {
+        const opt = c.label
+        const label = c.label
+        const content = c.content
         const isSelected = userAnswer === opt;
-        const isAnswer = opt === q.answer;
+        const isAnswer = opt === quiz.answer;
         let btnClass = 'quiz-choice-btn';
         if (showResult) {
           if (isAnswer && isSelected) {
@@ -115,7 +132,7 @@ function QuizSolve({ quiz, questions, onBack }) {
         }
         return (
           <button
-            key={c}
+            key={label}
             className={btnClass}
             disabled={showResult}
             onClick={() => {
@@ -123,10 +140,10 @@ function QuizSolve({ quiz, questions, onBack }) {
               handleSubmit(opt);
             }}
           >
-            {c}
+            {label}. {content}
           </button>
         );
-      })}
+      }))}
     </div>
   );
 
@@ -165,7 +182,7 @@ function QuizSolve({ quiz, questions, onBack }) {
         </div>
         
         <div className={`explanation-content ${showExplanation ? 'expanded' : ''}`}>
-          <div className="quiz-explanation">{q.explanation}</div>
+          <div className={`quiz-explanation ${isAnswerCorrect ? 'correct' : 'wrong'}`}>{quiz.explanation}</div>
         </div>
 
         <button className="start-btn" onClick={handleNext} style={{ marginTop: '1rem' }}>
@@ -177,11 +194,13 @@ function QuizSolve({ quiz, questions, onBack }) {
 
   return (
     <div className="main-container">
-      <div className="quiz-header">
-        <h1>{quiz?.title || quiz?.file.replace('.md', '')}</h1>
+      <div className="quiz-header-close">
         <button className="back-btn" onClick={onBack}>
           <span className="back-icon">✕</span>
         </button>
+      </div>
+      <div className="quiz-header">
+        <h1>{quiz.question}</h1>
       </div>
       
       <div className="quiz-navigation">
@@ -194,8 +213,8 @@ function QuizSolve({ quiz, questions, onBack }) {
         </button>
         
         <div className={`quiz-question-box ${animClass}`}>
-          <div className="quiz-q">{q.question}</div>
-          {q.type === 'choice' ? renderChoices() : renderBlank()}
+          {/*<div className="quiz-q">{quiz.question}</div>*/}
+          {quiz.type === 'choice' ? renderChoices() : renderBlank()}
           {showResult && renderResult()}
         </div>
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React from 'react';
 
 function groupBy(arr, key) {
   return arr.reduce((acc, item) => {
@@ -9,26 +9,25 @@ function groupBy(arr, key) {
   }, {});
 }
 
-function QuizSelect({ quizList, onSelect }) {
-  const [expandedGroups, setExpandedGroups] = useState({});
-  const [visibleGroups, setVisibleGroups] = useState(5);
-  const observerRef = useRef();
-  const lastGroupRef = useRef();
+function QuizSelect({ quizBookList, onSelect }) {
+  const [expandedGroups, setExpandedGroups] = React.useState({});
+  const [visibleGroups, setVisibleGroups] = React.useState(5);
+  const observerRef = React.useRef();
+  const lastGroupRef = React.useRef();
 
-  const grouped = groupBy(quizList, 'extra');
+  const grouped = groupBy(quizBookList, 'extra');
   const groupEntries = Object.entries(grouped);
 
-  useEffect(() => {
+  React.useEffect(() => {
     // 초기에 모든 그룹을 접힌 상태로 설정
     const initialExpanded = {};
     groupEntries.forEach(([group]) => {
       initialExpanded[group] = false;
     });
-    setExpandedGroups(initialExpanded);
-  }, [quizList]);
+  }, [groupEntries]);
 
-  useEffect(() => {
-    const observer = new IntersectionObserver(
+  React.useEffect(() => {
+    const observer = new window.IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && visibleGroups < groupEntries.length) {
           setVisibleGroups((prev) => Math.min(prev + 5, groupEntries.length));
@@ -78,9 +77,9 @@ function QuizSelect({ quizList, onSelect }) {
           <div className={`quiz-group-content ${expandedGroups[group] ? 'expanded' : ''}`}>
             <ul className="quiz-list">
               {quizzes.map((quiz) => (
-                <li key={quiz.file} className="quiz-item">
+                <li key={quiz.id} className="quiz-item">
                   <div className="quiz-info">
-                    <strong>{quiz.title || quiz.file.replace('.md','')}</strong>
+                    <strong>{quiz.title}</strong>
                     <span>{quiz.description}</span>
                   </div>
                   <button className="start-btn" onClick={() => onSelect(quiz)}>
