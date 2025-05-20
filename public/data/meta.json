@@ -2,17 +2,66 @@
   "quizzes": [
     {
       "file": "1_websocket.md",
-      "title": "1일차 웹소켓",
-      "description": "1일차 웹소켓",
-      "extra": "난이도: -",
+      "title": "1_websocket",
+      "description": "",
+      "extra": "",
       "group": "웹소켓"
     },
     {
       "file": "2_stomp.md",
-      "title": "2일차 웹소켓 stomp",
-      "description": "2일차 웹소켓 stomp",
-      "extra": "난이도: -",
+      "title": "2_stomp",
+      "description": "",
+      "extra": "",
       "group": "웹소켓"
+    },
+    {
+      "file": "3_stomp_over.md",
+      "title": "3_stomp_over",
+      "description": "",
+      "extra": "",
+      "group": "웹소켓"
+    },
+    {
+      "file": "6_mysql_jpa.md",
+      "title": "6_mysql_jpa",
+      "description": "",
+      "extra": "",
+      "group": "jpa"
+    },
+    {
+      "file": "7_Spring_AOP_threadlocal.md",
+      "title": "7_Spring_AOP_threadlocal",
+      "description": "",
+      "extra": "",
+      "group": "aop"
+    },
+    {
+      "file": "8_Spring_Testing_DDD.md",
+      "title": "8_Spring_Testing_DDD",
+      "description": "",
+      "extra": "",
+      "group": "ddd"
+    },
+    {
+      "file": "9_Spring_복습_관찰가능성.md",
+      "title": "9_Spring_복습_관찰가능성",
+      "description": "",
+      "extra": "",
+      "group": "관찰가능성"
+    },
+    {
+      "file": "11_NoSQL_Elasticsearch.md",
+      "title": "11_NoSQL_Elasticsearch",
+      "description": "",
+      "extra": "",
+      "group": "es"
+    },
+    {
+      "file": "12_Elasticsearch_실습.md",
+      "title": "12_Elasticsearch_실습",
+      "description": "",
+      "extra": "",
+      "group": "es"
     }
   ]
 }
