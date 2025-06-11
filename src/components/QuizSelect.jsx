@@ -18,7 +18,7 @@ function QuizSelect({ quizBookList, onSelect }) {
   const grouped = groupBy(quizBookList, 'extra');
   const groupEntries = Object.entries(grouped);
 
-  React.useEffect(() => {
+  useEffect(() => {
     // 초기에 모든 그룹을 접힌 상태로 설정
     const initialExpanded = {};
     groupEntries.forEach(([group]) => {
