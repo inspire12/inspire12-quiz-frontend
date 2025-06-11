@@ -14,7 +14,7 @@ create table quiz_books (
 -- 퀴즈 항목
 create table quizzes (
   id bigserial primary key,
-  quiz_set_id uuid not null,
+  quiz_book_id uuid not null,
   question text not null,
   answer text not null,    -- 예: 'B' (또는 text 입력형에선 정답 문자열)
   explanation text,
@@ -101,7 +101,7 @@ create policy "user notes own wrong answers" on quiz_wrong_notes for all using (
 
 -- 인덱스 최적화
 create index on quiz_books (created_at desc);
-create index on quizzes (quiz_set_id);
+create index on quizzes (quiz_book_id);
 create index on quiz_choices (quiz_id);
 create index on quiz_answers (user_id, answered_at desc);
 create index on quiz_answers (quiz_book_id);

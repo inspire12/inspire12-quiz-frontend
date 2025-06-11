@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 
 function groupBy(arr, key) {
   return arr.reduce((acc, item) => {
@@ -60,12 +60,12 @@ function QuizSelect({ quizBookList, onSelect }) {
     <div className="main-container">
       <h1>퀴즈를 선택하세요</h1>
       {groupEntries.slice(0, visibleGroups).map(([group, quizzes], index) => (
-        <div 
-          key={group} 
+        <div
+          key={group}
           className="quiz-group"
           ref={index === visibleGroups - 1 ? lastGroupRef : null}
         >
-          <div 
+          <div
             className="quiz-group-header"
             onClick={() => toggleGroup(group)}
           >
@@ -100,4 +100,4 @@ function QuizSelect({ quizBookList, onSelect }) {
   );
 }
 
-export default QuizSelect; 
+export default QuizSelect;

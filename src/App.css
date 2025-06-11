@@ -124,9 +124,11 @@ body::-webkit-scrollbar {
   align-items: flex-start;
 }
 
+
 .quiz-item {
   width: 100%;
   max-width: 600px;
+  min-width: 600px;
   margin-left: auto;
   margin-right: auto;
   box-sizing: border-box;
@@ -425,7 +427,6 @@ body::-webkit-scrollbar {
   width: 100%;
   box-sizing: border-box;
   padding: 0 0.5rem;
-  margin-bottom: 0.7rem;
   will-change: max-height;
   animation: slide-down 0.3s ease-out;
 }
@@ -465,6 +466,20 @@ body::-webkit-scrollbar {
     font-size: 1.1rem;
     padding: 1.5rem;
   }
+}
+
+.quiz-actions {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.delete-btn {
+  background-color: #f44336;
+  color: white;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
 }
 
 /* 태블릿 환경 (768px - 1023px) */
@@ -613,13 +628,25 @@ body::-webkit-scrollbar {
     align-items: stretch;
     gap: 0.5rem;
   }
+
   .quiz-item {
-    max-width: 100%;
-    padding: 0.7rem 0.5rem 0.7rem 0.5rem;
-    border-radius: 7px;
-    margin-bottom: 0.5rem;
-    box-shadow: none;
-    gap: 0.7rem;
+    width: 100%;
+    max-width: 600px;
+    min-width: 600px;
+    margin-left: auto;
+    margin-right: auto;
+    box-sizing: border-box;
+    background: var(--bg-primary);
+    border-radius: 8px;
+    padding: 1.2rem 1.5rem 1.2rem 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px var(--shadow-color);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 1.5rem;
+    transition: transform 0.2s;
+    text-align: left;
   }
   .quiz-info strong {
     font-size: 1rem;
@@ -661,9 +688,23 @@ body::-webkit-scrollbar {
     font-size: 24px;
   }
 
+
   .quiz-q {
-    color: #e2e8f0;
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    word-break: break-word;
+
+    font-size: clamp(1rem, 2vw, 1.25rem);
+    line-height: 1.6;
+    max-width: 800px;
+    margin: 0 auto 2rem auto;
+    font-weight: 600;
+    color: var(--text-title);
   }
+
 
   .quiz-choice-btn {
     background: #2d3748;
