@@ -6,7 +6,7 @@ create table quiz_books (
   id uuid primary key default uuid_generate_v4(),
   title text not null,
   description text,
-  extra text,
+  group text,
   total_quizzes integer default 0, -- 총 문제 수
   created_at timestamptz default now()
 );

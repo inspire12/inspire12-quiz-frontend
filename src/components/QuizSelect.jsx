@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import supabase from "../api/supabaseClient.js";
 
 function groupBy(arr, key) {
   return arr.reduce((acc, item) => {
@@ -10,12 +11,13 @@ function groupBy(arr, key) {
 }
 
 function QuizSelect({ quizBookList, onSelect }) {
+  const [localList, setLocalList] = useState(quizBookList);
   const [expandedGroups, setExpandedGroups] = React.useState({});
   const [visibleGroups, setVisibleGroups] = React.useState(5);
   const observerRef = React.useRef();
   const lastGroupRef = React.useRef();
 
-  const grouped = groupBy(quizBookList, 'extra');
+  const grouped = groupBy(localList, 'group');
   const groupEntries = Object.entries(grouped);
 
   useEffect(() => {
@@ -26,7 +28,7 @@ function QuizSelect({ quizBookList, onSelect }) {
     });
   }, [groupEntries]);
 
-  React.useEffect(() => {
+  useEffect(() => {
     const observer = new window.IntersectionObserver(
       (entries) => {
         if (entries[0].isIntersecting && visibleGroups < groupEntries.length) {
@@ -54,6 +56,55 @@ function QuizSelect({ quizBookList, onSelect }) {
       ...prev,
       [group]: !prev[group]
     }));
+  };
+
+  const handleDelete = async (quizBookId) => {
+    if (!window.confirm('정말 삭제하시겠습니까?')) return;
+
+    try {
+      // 1. 관련 quizzes 가져오기
+      const { data: quizzes, error: quizFetchError } = await supabase
+          .from('quizzes')
+          .select('id')
+          .eq('quiz_book_id', quizBookId);
+
+      if (quizFetchError) throw quizFetchError;
+
+      const quizIds = quizzes.map(q => q.id);
+
+      // 2. quiz_choices 삭제
+      if (quizIds.length > 0) {
+        const { error: choiceDeleteError } = await supabase
+            .from('quiz_choices')
+            .delete()
+            .in('quiz_id', quizIds);
+
+        if (choiceDeleteError) throw choiceDeleteError;
+      }
+
+      // 3. quizzes 삭제
+      const { error: quizDeleteError } = await supabase
+          .from('quizzes')
+          .delete()
+          .eq('quiz_book_id', quizBookId);
+
+      if (quizDeleteError) throw quizDeleteError;
+
+      // 4. quiz_book 삭제
+      const { error: bookDeleteError } = await supabase
+          .from('quiz_books')
+          .delete()
+          .eq('id', quizBookId);
+
+      if (bookDeleteError) throw bookDeleteError;
+
+      // 5. localList 업데이트
+      setLocalList(prev => prev.filter(book => book.id !== quizBookId));
+      alert('삭제 완료');
+    } catch (err) {
+      console.error(err);
+      alert('삭제 중 오류 발생: ' + err.message);
+    }
   };
 
   return (
@@ -84,6 +135,12 @@ function QuizSelect({ quizBookList, onSelect }) {
                   </div>
                   <button className="start-btn" onClick={() => onSelect(quiz)}>
                     시작
+                  </button>
+                  <button
+                      className="delete-btn bg-red-500 text-white px-3 py-1 rounded"
+                      onClick={() => handleDelete(quiz.id)}
+                  >
+                    삭제
                   </button>
                 </li>
               ))}

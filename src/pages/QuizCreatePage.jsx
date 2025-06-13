@@ -37,7 +37,7 @@ function QuizCreatePage() {
             const quizBook = {
                 title: parsed.title,
                 description: parsed.description || '',
-                extra: parsed.extra || '',
+                group: parsed.group || '',
                 total_quizzes: parsed.quizzes?.length || 0,
             };
 
@@ -98,7 +98,7 @@ function QuizCreatePage() {
             const quizBook = {
                 title: book.title,
                 description: book.description || '',
-                extra: book.extra || '',
+                group: book.group || '',
                 total_quizzes: book.quizzes?.length || 0
             };
 
