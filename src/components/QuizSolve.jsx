@@ -202,29 +202,31 @@ function QuizSolve({ quizzes, choicesList, onBack }) {
       <div className="quiz-header">
         <h1>{quiz.question}</h1>
       </div>
-      
-      <div className="quiz-navigation">
-        <button 
-          className={`nav-btn prev-btn ${isFirst ? 'disabled' : ''}`} 
-          onClick={handlePrev} 
-          disabled={isFirst}
+      <div className="quiz-nav-buttons-top">
+        <button
+            className={`nav-btn prev-btn ${isFirst ? 'disabled' : ''}`}
+            onClick={handlePrev}
+            disabled={isFirst}
         >
-          ←
+          ← 이전
         </button>
+
+        <button
+            className={`nav-btn next-btn ${isLast ? 'disabled' : ''}`}
+            onClick={handleNext}
+            disabled={isLast}
+        >
+          다음 →
+        </button>
+      </div>
+
+      <div className="quiz-navigation">
         
         <div className={`quiz-question-box ${animClass}`}>
-          {/*<div className="quiz-q">{quiz.question}</div>*/}
           {quiz.type === 'choice' ? renderChoices() : renderBlank()}
           {showResult && renderResult()}
         </div>
 
-        <button 
-          className={`nav-btn next-btn ${isLast ? 'disabled' : ''}`} 
-          onClick={handleNext} 
-          disabled={isLast}
-        >
-          →
-        </button>
       </div>
     </div>
   );
