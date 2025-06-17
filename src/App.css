@@ -778,7 +778,8 @@ body::-webkit-scrollbar {
 }
 
 .quiz-group-content.expanded {
-    max-height: 2000px;
+    max-height: none;     /* <- 핵심: 전체 콘텐츠 표시 */
+    overflow: visible;
 }
 
 /* 로드 더보기 */
