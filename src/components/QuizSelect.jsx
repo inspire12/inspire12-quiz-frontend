@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef } from 'react';
 import supabase from "../api/supabaseClient.js";
+import QuizImportBox from "./QuizImportBox.jsx";
 
 function groupBy(arr, key) {
   return arr.reduce((acc, item) => {

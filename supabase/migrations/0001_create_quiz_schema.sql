@@ -80,6 +80,21 @@ create table quiz_wrong_notes (
   primary key (user_id, quiz_id)
 );
 
+create table quiz_settings (
+                               key text primary key,
+                               value jsonb not null,
+                               description text
+);
+
+create table user_quiz_settings (
+                                    user_id uuid not null references users(id) on delete cascade,
+                                    key text not null,
+                                    value jsonb not null,
+                                    updated_at timestamptz default now(),
+                                    primary key (user_id, key)
+);
+
+
 -- RLS 설정
 alter table quiz_answers enable row level security;
 alter table quiz_favorites enable row level security;
@@ -98,6 +113,11 @@ create policy "user deletes own answers" on quiz_answers for delete using (auth.
 create policy "user favorites own quizzes" on quiz_favorites for all using (auth.uid() = user_id);
 
 create policy "user notes own wrong answers" on quiz_wrong_notes for all using (auth.uid() = user_id);
+
+create policy "user notes own wrong answers"
+  on quiz_wrong_notes
+  for all
+  using (auth.uid() = user_id);
 
 -- 인덱스 최적화
 create index on quiz_books (created_at desc);

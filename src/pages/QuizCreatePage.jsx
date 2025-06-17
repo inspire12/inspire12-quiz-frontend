@@ -2,6 +2,7 @@
 
 import React, { useState } from 'react';
 import supabase from '../api/supabaseClient';
+import QuizImportBox from "../components/QuizImportBox.jsx";
 
 function QuizCreatePage() {
     const [jsonInput, setJsonInput] = useState('');
@@ -208,6 +209,7 @@ function QuizCreatePage() {
                     </div>
                 ))}
             </div>
+            <QuizImportBox />
         </div>
     );
 }
