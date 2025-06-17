@@ -2,19 +2,18 @@
 import {useEffect} from 'react'
 import {useNavigate} from 'react-router-dom'
 import supabase from '../api/supabaseClient'
+import {getCurrentUserId} from "../utils/auth.js";
 
 export default function AuthHandler() {
     const navigate = useNavigate()
     useEffect(() => {
         const migrateGuestData = async (userId) => {
-            const guestId = getGuestId();
-            if (!guestId) return;
-
+            const creator = await getCurrentUserId()
             // guest_id 로 만들어둔 퀴즈북 전부 내 계정(user_id)으로 바꿔주기
             await supabase
                 .from('quiz_books')
-                .update({user_id: userId, guest_id: null})
-                .eq('guest_id', guestId);
+                .update({user_id: userId})
+                .eq('userId', creator);
         };
 
         const checkAndMigrate = async () => {

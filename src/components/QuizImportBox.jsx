@@ -101,7 +101,7 @@ export default function QuizImportBox() {
                         padding: '0.5rem 1rem',
                         background: '#2563eb',
                         color: 'white',
-                        'word-break': 'keep-all',
+                        wordBreak: 'keep-all',
                         border: 'none',
                         borderRadius: '4px',
                         cursor: 'pointer'

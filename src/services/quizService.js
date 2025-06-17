@@ -1,35 +1,12 @@
 import supabase from '../api/supabaseClient'
+import {getCurrentUserId} from "../utils/auth.js";
 
-const example = [{
-    title: "내 첫 퀴즈북",
-    description: "GPTER로 만든 퀴즈",
-    group: "튜토리얼",
-    quizzes: [
-        {
-            question: "JS에서 변수 선언 키워드?",
-            answer: "const",
-            type: "choice",
-            group: "Tutorial",
-            quiz_choices: [
-                { label: "A", content: "var" },
-                { label: "B", content: "let" },
-                { label: "C", content: "const" },
-                { label: "D", content: "class" }
-            ]
-        }
-    ]
-}]
 
 export async function fetchQuizBooks() {
-    const { data: { user } } = await supabase.auth.getUser();
-    const guestId = localStorage.getItem('guestId');
+    const userId = await getCurrentUserId()
 
     let query = supabase.from('quiz_books').select('*');
-    if (user) {
-        query = query.eq('user_id', user.id);
-    } else {
-        query = query.eq('guest_id', guestId);
-    }
+    query = query.eq('user_id', userId);
 
     const { data, error } = await query.order('created_at', { ascending: false });
     if (error) throw error;

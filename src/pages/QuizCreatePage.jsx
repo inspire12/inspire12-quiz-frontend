@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import supabase from '../api/supabaseClient';
 import QuizImportBox from "../components/QuizImportBox.jsx";
-import { getGuestId } from '../utils/guest';
+import {getCurrentUserId} from '../utils/auth.js';
 
 function QuizCreatePage() {
     const [jsonInput, setJsonInput] = useState('');
@@ -35,14 +35,14 @@ function QuizCreatePage() {
         try {
             setLoading(true);
             const parsed = JSON.parse(jsonInput);
-            const guestId = getGuestId();
+            const userId = await getCurrentUserId()  // 로그인 유저 ID 조회
 
             const quizBook = {
                 title: parsed.title,
                 description: parsed.description || '',
                 group: parsed.group || '',
                 total_quizzes: parsed.quizzes.length,
-                guest_id: guestId  // <- 손님 식별자
+                user_id: userId
             };
 
             const { data: bookData, error: bookError } = await supabase
@@ -80,7 +80,8 @@ function QuizCreatePage() {
                             quiz_id: quizId,
                             label: c.label,
                             content: c.content,
-                            sort_order: idx
+                            sort_order: idx,
+                            user_id: userId
                         }))
                     );
                 }
@@ -98,12 +99,13 @@ function QuizCreatePage() {
     const handleSubmitBook = async (book) => {
         try {
             setLoading(true);
-
+            const userId = await getCurrentUserId()
             const quizBook = {
                 title: book.title,
                 description: book.description || '',
                 group: book.group || '',
-                total_quizzes: book.quizzes?.length || 0
+                total_quizzes: book.quizzes?.length || 0,
+                user_id: userId
             };
 
             const { data: bookData, error: bookError } = await supabase
@@ -125,7 +127,8 @@ function QuizCreatePage() {
                         answer: quizData.answer,
                         explanation: quizData.explanation,
                         type: quizData.type,
-                        sort_order: i
+                        sort_order: i,
+                        user_id: userId
                     }])
                     .select('id');
 
@@ -142,7 +145,8 @@ function QuizCreatePage() {
                                 quiz_id: quizId,
                                 label: c.label,
                                 content: c.content,
-                                sort_order: idx
+                                sort_order: idx,
+                                user_id: userId
                             }))
                         );
 
