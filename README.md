@@ -16,10 +16,7 @@ quiz-vite/
 │  ├─ components/
 │  │    ├─ QuizSelect.jsx   # 퀴즈 선택 페이지
 │  │    └─ QuizSolve.jsx    # 퀴즈 풀이 페이지
-│  ├─ data/
-│  │    ├─ meta.json        # 퀴즈 메타 정보
-│  │    ├─ it.md            # 퀴즈 데이터 (마크다운)
-│  │    └─ ...
+
 │  ├─ App.jsx
 │  └─ ...
 ├─ public/
