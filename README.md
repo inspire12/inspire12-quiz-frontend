@@ -1,30 +1,16 @@
-# 📝 React 퀴즈 앱
+# 📝 퀴즈 메이커
 
-React + Vite 기반의 마크다운 퀴즈 앱입니다. 다양한 퀴즈를 md 파일로 관리하고, 직관적인 UI와 애니메이션으로 문제를 풀 수 있습니다.
+- [앱 주소 vercel](https://inspire12-quiz-frontend.vercel.app)
 
-## 주요 기능
-- 퀴즈 선택/풀이 페이지 분리 및 라우팅
-- 객관식/빈칸형 문제 지원 (마크다운 기반)
-- 정답/오답 애니메이션 및 해설 표시
-- 문제 이동(이전/다음), 최종 점수 집계
-- 퀴즈 데이터/메타 정보 파일 분리 관리
+공부가 필요한 자료를 퀴즈로 만드는 웹앱입니다.  
+ChatGPT의 [Gpters](https://chatgpt.com/g/g-68493cdaf5208191867bcc81fa3f017b-kwijeu-meikeo) 에 PDF나 텍스트를 넣어 만들어진 퀴즈(json)를 입력하여 사용합니다.
 
-## 폴더 구조
-```
-quiz-vite/
-├─ src/
-│  ├─ components/
-│  │    ├─ QuizSelect.jsx   # 퀴즈 선택 페이지
-│  │    └─ QuizSolve.jsx    # 퀴즈 풀이 페이지
+## 사용 방법 
+[![Watch the video](https://img.youtube.com/vi/VIDEO_ID/maxresdefault.jpg)](https://youtu.be/OI7HJVNPxdY)
 
-│  ├─ App.jsx
-│  └─ ...
-├─ public/
-├─ package.json
-└─ README.md
-```
 
-## 실행 방법
+## 빌드 및 실행 방법
+0. vercel, npm 설치 필요
 1. 의존성 설치
    ```bash
    npm install
@@ -35,45 +21,6 @@ quiz-vite/
    ```
 3. 브라우저에서 [http://localhost:5173](http://localhost:5173) 접속
 
-## 퀴즈 데이터 작성법
-- `src/data/` 폴더에 `.md` 파일로 문제를 작성합니다.
-- 각 퀴즈 파일은 `meta.json`에 등록해야 합니다.
-
-### meta.json 예시
-```json
-{
-  "quizzes": [
-    {
-      "file": "it.md",
-      "title": "IT 상식 퀴즈",
-      "description": "IT와 컴퓨터에 관한 문제 모음",
-      "extra": "최신 트렌드 반영"
-    }
-  ]
-}
-```
-
-### 퀴즈 마크다운 예시 (it.md)
-```
-1. 다음 중 HTTP 상태 코드 404의 의미는?
-A. 서버 오류
-B. 요청 성공
-C. 페이지를 찾을 수 없음
-D. 인증 필요
-
-정답: C
-해설: 404는 요청한 페이지를 찾을 수 없음을 의미합니다.
-
-2. 대한민국의 수도는 ___ 입니다.
-
-정답: 서울
-해설: 대한민국의 수도는 서울입니다.
-```
-
-## 스크린샷 예시
-> (실행 후 캡처 이미지를 첨부해 주세요)
-
----
 
 ## 기여 방법
 - 이 저장소는 자유롭게 포크/수정/PR 가능합니다.
