@@ -1,5 +1,5 @@
-import React, { useState, useEffect } from 'react'
-import { useNavigate } from 'react-router-dom'
+import React, {useState, useEffect} from 'react'
+import {useNavigate} from 'react-router-dom'
 import supabase from '../api/supabaseClient'
 import QuizImportBox from "./QuizImportBox.jsx";
 
@@ -11,11 +11,11 @@ export default function Sidebar() {
 
     useEffect(() => {
         const fetchUserInfo = async () => {
-            const { data: { user } } = await supabase.auth.getUser()
+            const {data: {user}} = await supabase.auth.getUser()
             setUser(user)
 
             if (user) {
-                const { data: existingUser } = await supabase
+                const {data: existingUser} = await supabase
                     .from('users')
                     .select('nickname')
                     .eq('id', user.id)
@@ -35,7 +35,7 @@ export default function Sidebar() {
         fetchUserInfo()
 
         // 로그인 상태 변경 감지
-        const { data: authListener } = supabase.auth.onAuthStateChange((_event, session) => {
+        const {data: authListener} = supabase.auth.onAuthStateChange((_event, session) => {
             setUser(session?.user || null)
             fetchUserInfo()
         })
@@ -48,7 +48,7 @@ export default function Sidebar() {
     const handleLogout = async () => {
         await supabase.auth.signOut()
         setUser(null)
-        navigate('/')
+        navigate('/create')
     }
 
     const handleLogin = () => {
@@ -78,9 +78,29 @@ export default function Sidebar() {
             </button>
 
             {!collapsed && (
-                <div style={{ marginTop: '1rem' }}>
-                    <button onClick={() => handleNavigate('/')} style={{ display: 'block', marginBottom: '0.5rem', background: '#3b82f6', color: '#fff', padding: '0.4rem', borderRadius: '4px', border: 'none', width: '100%' }}>퀴즈 선택</button>
-                    <button onClick={() => handleNavigate('/create')} style={{ display: 'block', marginBottom: '1rem', background: '#10b981', color: '#fff', padding: '0.4rem', borderRadius: '4px', border: 'none', width: '100%' }}>퀴즈 만들기</button>
+                <div style={{marginTop: '1rem'}}>
+                    <button onClick={() => handleNavigate('/')} style={{
+                        display: 'block',
+                        marginBottom: '0.5rem',
+                        background: '#3b82f6',
+                        color: '#fff',
+                        padding: '0.4rem',
+                        borderRadius: '4px',
+                        border: 'none',
+                        width: '100%'
+                    }}>퀴즈 선택
+                    </button>
+                    <button onClick={() => handleNavigate('/create')} style={{
+                        display: 'block',
+                        marginBottom: '1rem',
+                        background: '#10b981',
+                        color: '#fff',
+                        padding: '0.4rem',
+                        borderRadius: '4px',
+                        border: 'none',
+                        width: '100%'
+                    }}>퀴즈 만들기
+                    </button>
 
                     {user ? (
                         <>
@@ -97,7 +117,8 @@ export default function Sidebar() {
                                     color: '#fff',
                                     cursor: 'pointer'
                                 }}
-                            >로그아웃</button>
+                            >로그아웃
+                            </button>
                         </>
                     ) : (
                         <>
@@ -113,7 +134,8 @@ export default function Sidebar() {
                                     color: '#fff',
                                     cursor: 'pointer'
                                 }}
-                            >로그인</button>
+                            >로그인
+                            </button>
                         </>
                     )}
                 </div>

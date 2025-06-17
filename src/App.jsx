@@ -1,8 +1,6 @@
 import React from 'react'
 import './App.css'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import useQuizBooks from './hooks/useQuizBooks'
-import {AnimatePresence} from 'framer-motion'
 import QuizSolvePage from "./pages/QuizSolvePage.jsx";
 import QuizSelectPage from "./pages/QuizSelectPage.jsx";
 import QuizCreatePage from "./pages/QuizCreatePage.jsx";
