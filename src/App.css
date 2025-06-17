@@ -139,7 +139,7 @@ body::-webkit-scrollbar {
     background: var(--bg-primary);
     border-radius: 8px;
     padding: 1.2rem 1.5rem 1.2rem 1.2rem;
-    margin-bottom: 1rem;
+    margin-bottom: 0.5rem;
     box-shadow: 0 2px 4px var(--shadow-color);
     display: flex;
     justify-content: space-between;
@@ -932,8 +932,6 @@ body::-webkit-scrollbar {
 /* 전역 반응형 최적화 */
 .quiz-list {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-    gap: 1rem;
     padding: 0;
 }
 
