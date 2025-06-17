@@ -165,7 +165,7 @@ function QuizCreatePage() {
     return (
         <div className="main-container p-6 max-w-4xl mx-auto">
             <h1 className="text-2xl font-bold mb-4">JSON으로 퀴즈 세트 등록</h1>
-
+            <h3 className="text-2xl font-bold mb-4"><a href="https://chatgpt.com/g/g-68493cdaf5208191867bcc81fa3f017b-kwijeu-meikeo" target="_blank" rel="noreferrer" style={{color: '#2563eb'}}>GPTERJSON 생성용 Gpters</a></h3>
             <textarea
                 value={jsonInput}
                 onChange={(e) => setJsonInput(e.target.value)}
@@ -181,7 +181,7 @@ function QuizCreatePage() {
             >
                 {loading ? '저장 중...' : '텍스트 입력 저장하기'}
             </button>
-
+            <hr/>
             <div className="mt-10 border-t pt-6">
                 <h2 className="text-xl font-semibold mb-3">📥 JSON 파일로 퀴즈 등록</h2>
                 <input
@@ -215,6 +215,7 @@ function QuizCreatePage() {
                     </div>
                 ))}
             </div>
+            <hr/>
             <QuizImportBox />
         </div>
     );

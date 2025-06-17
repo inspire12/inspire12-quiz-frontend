@@ -1,8 +1,6 @@
 import React from 'react'
 import './App.css'
 import {BrowserRouter, Routes, Route} from 'react-router-dom'
-import useQuizBooks from './hooks/useQuizBooks'
-import {AnimatePresence} from 'framer-motion'
 import QuizSolvePage from "./pages/QuizSolvePage.jsx";
 import QuizSelectPage from "./pages/QuizSelectPage.jsx";
 import QuizCreatePage from "./pages/QuizCreatePage.jsx";
@@ -27,9 +25,12 @@ function App() {
                     <AuthHandler/> {/* 세션 확인 후 자동 리디렉션 */}
                     <div style={{display: 'flex'}}>
                         <Sidebar/>
-                        <div style={{marginLeft: '200px', width: '100%'}}> {/* Sidebar 너비 고려 */}
+                        <div className="main-content" style={{ width: '100%' }}>
+                            <TransitionGroup component={null}>
+                                <CSSTransition classNames="fade" timeout={300} key={window.location.pathname}>
 
-                            <Routes>
+
+                                <Routes>
                                 <Route path="/" element={<QuizSelectPage/>}/>
                                 <Route path="/login" element={<SigninPage/>}/>
                                 <Route path="/signup" element={<SignupPage/>}/>
@@ -37,6 +38,8 @@ function App() {
                                 <Route path="/create" element={<QuizCreatePage/>}/>
                                 <Route path="/wrong-notes" element={<WrongNoteList/>}/>
                             </Routes>
+                                </CSSTransition>
+                            </TransitionGroup>
                         </div>
                     </div>
                 </BrowserRouter>
