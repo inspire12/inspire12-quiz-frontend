@@ -1,6 +1,7 @@
 // src/components/QuizImportBox.jsx
 import {useState} from 'react'
 import supabase from '../api/supabaseClient'
+import {getCurrentUserId} from "../utils/auth.js";
 
 export default function QuizImportBox() {
     const [quizBookId, setQuizBookId] = useState('')
@@ -19,7 +20,7 @@ export default function QuizImportBox() {
                 .single()
 
             if (bookError || !book) throw bookError || new Error('해당 퀴즈북이 없습니다')
-
+            const userId = await getCurrentUserId()
             const {data: quizzes} = await supabase
                 .from('quizzes')
                 .select('*')
@@ -36,7 +37,8 @@ export default function QuizImportBox() {
                     title: book.title + ' (복사본)',
                     description: book.description,
                     group: book.group,
-                    total_quizzes: quizzes.length
+                    total_quizzes: quizzes.length,
+                    user_id: userId,
                 }])
                 .select('id')
                 .single()
