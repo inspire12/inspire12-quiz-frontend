@@ -80,8 +80,7 @@ function QuizCreatePage() {
                             quiz_id: quizId,
                             label: c.label,
                             content: c.content,
-                            sort_order: idx,
-                            user_id: userId
+                            sort_order: idx
                         }))
                     );
                 }
