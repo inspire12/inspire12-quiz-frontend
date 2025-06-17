@@ -37,8 +37,9 @@ const SigninPage = () => {
             flexDirection: 'column',
             alignItems: 'center',
             justifyContent: 'center',
-            minHeight: '100vh',
-            backgroundColor: '#f0f2f5',
+            // minHeight: '100vh',
+            padding: '2rem',              // 화면 중앙에서 약간 떨어진 위치에 카드 배치
+            backgroundColor: 'rgb(240, 242, 245)',
             fontFamily: 'Arial, sans-serif'
         }}>
             <div style={{
@@ -48,7 +49,8 @@ const SigninPage = () => {
                 boxShadow: '0 4px 12px rgba(0, 0, 0, 0.1)',
                 textAlign: 'center',
                 width: '350px',
-                maxWidth: '90%'
+                maxWidth: '90%',
+                boxSizing: 'border-box'
             }}>
                 <h2 style={{
                     marginBottom: '30px',

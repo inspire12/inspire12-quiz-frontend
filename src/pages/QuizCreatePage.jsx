@@ -3,6 +3,7 @@
 import React, { useState } from 'react';
 import supabase from '../api/supabaseClient';
 import QuizImportBox from "../components/QuizImportBox.jsx";
+import { getGuestId } from '../utils/guest';
 
 function QuizCreatePage() {
     const [jsonInput, setJsonInput] = useState('');
@@ -34,12 +35,14 @@ function QuizCreatePage() {
         try {
             setLoading(true);
             const parsed = JSON.parse(jsonInput);
+            const guestId = getGuestId();
 
             const quizBook = {
                 title: parsed.title,
                 description: parsed.description || '',
                 group: parsed.group || '',
-                total_quizzes: parsed.quizzes?.length || 0,
+                total_quizzes: parsed.quizzes.length,
+                guest_id: guestId  // <- 손님 식별자
             };
 
             const { data: bookData, error: bookError } = await supabase
