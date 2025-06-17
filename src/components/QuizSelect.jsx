@@ -138,7 +138,7 @@ function QuizSelect({quizBookList, onSelect}) {
                             {quizzes.map((quiz) => (
                                 <li key={quiz.id} className="quiz-item">
                                     <div className="quiz-info">
-                                        <strong>{quiz.title}</strong>
+                                        <span>{quiz.title}</span>
                                         <span>{quiz.description}</span>
                                     </div>
                                     <button className="start-btn" onClick={() => onSelect(quiz)}>
