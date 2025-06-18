@@ -13,7 +13,7 @@ export default function AuthHandler() {
             await supabase
                 .from('quiz_books')
                 .update({user_id: userId})
-                .eq('userId', creator);
+                .eq('user_id', creator);
         };
 
         const checkAndMigrate = async () => {
