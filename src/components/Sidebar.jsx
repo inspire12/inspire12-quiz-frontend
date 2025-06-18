@@ -64,7 +64,7 @@ export default function Sidebar() {
                         <>
                             <p><strong>프로필</strong></p>
                             <p>닉네임: {nickname || '로딩 중...'}</p>
-                            <button onClick={() => handleLogout}>로그아웃</button>
+                            <button onClick={handleLogout}>로그아웃</button>
                         </>
                     ) : (
                         <>
