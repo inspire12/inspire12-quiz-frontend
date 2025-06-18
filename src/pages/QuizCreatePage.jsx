@@ -53,38 +53,44 @@ function QuizCreatePage() {
             if (bookError) throw bookError;
 
             const quizBookId = bookData[0].id;
-
+            const quizzes = []
+            const quizzesChoices = []
             for (const [i, quiz] of parsed.quizzes.entries()) {
-                const { quiz_choices, ...quizData } = quiz;
+                const {quiz_choices, ...quizData} = quiz;
+                quizzes.push({
+                    quiz_book_id: quizBookId,
+                    question: quizData.question,
+                    answer: quizData.answer,
+                    explanation: quizData.explanation,
+                    type: quizData.type,
+                    sort_order: i
+                })
+            }
+            const { data: quizDataResults, error: quizError } = await supabase
+                .from('quizzes')
+                .insert(quizzes)
+                .select('id');
 
-                const { data: quizDataResult, error: quizError } = await supabase
-                    .from('quizzes')
-                    .insert([{
-                        quiz_book_id: quizBookId,
-                        question: quizData.question,
-                        answer: quizData.answer,
-                        explanation: quizData.explanation,
-                        type: quizData.type,
-                        sort_order: i
-                    }])
-                    .select('id');
+            if (quizError) throw quizError;
+            for (const [i, quiz] of parsed.quizzes.entries()) {
+                const {quiz_choices, ...quizData} = quiz;
 
-                if (quizError) throw quizError;
-
-                const quizId = quizDataResult[0].id;
+                const quizDataResult = quizDataResults[i]
+                const quizId = quizDataResult.id;
 
                 if (quiz.type === 'choice' && quiz_choices?.length > 0) {
-                    await supabase.from('quiz_choices').insert(
-                        quiz_choices.map((c, idx) => ({
-                            quiz_book_id: quizBookId,
-                            quiz_id: quizId,
-                            label: c.label,
-                            content: c.content,
-                            sort_order: idx
-                        }))
-                    );
+                    quizzesChoices.push(...quiz_choices.map((c, idx) => ({
+                        quiz_book_id: quizBookId,
+                        quiz_id: quizId,
+                        label: c.label,
+                        content: c.content,
+                        sort_order: idx
+                    })))
                 }
             }
+            await supabase.from('quiz_choices').insert(
+                quizzesChoices
+            );
 
             alert('텍스트 입력 퀴즈 저장 완료');
         } catch (e) {
