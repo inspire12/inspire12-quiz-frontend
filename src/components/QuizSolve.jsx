@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useCallback, useMemo, useRef} from 'react';
-import { AnimatePresence, motion } from 'framer-motion'; // 상단에 추가
+import { AnimatePresence, motion } from 'framer-motion';
+import AnimatedContainer from "../layouts/AnimationContainer.jsx"; // 상단에 추가
 
 function groupBy(arr, key) {
   return arr.reduce((acc, item) => {
@@ -201,18 +202,9 @@ function QuizSolve({ quizzes, choicesList, onBack }) {
         </button>
       </div>
       <div className="quiz-header">
-        <AnimatePresence mode="wait">
-          <motion.div
-              key={quiz.id}  // 중요: 문제 변경마다 고유 key로 재렌더
-              initial={{ opacity: 0, x: 30 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -30 }}
-              transition={{ duration: 0.3 }}
-              className={`quiz-question-box ${animClass}`}
-          >
+        <AnimatedContainer keyId={quiz.id} className={`quiz-question-box ${animClass}`}>
             <h1>{quiz.question}</h1>
-          </motion.div>
-        </AnimatePresence>
+        </AnimatedContainer>
 
       </div>
       <div className="quiz-nav-buttons-top">
@@ -236,20 +228,10 @@ function QuizSolve({ quizzes, choicesList, onBack }) {
       <div className="quiz-navigation">
 
         <div className={`quiz-question-box ${animClass}`}>
-          <AnimatePresence mode="wait">
-            <motion.div
-                key={quiz.id}  // 중요: 문제 변경마다 고유 key로 재렌더
-                initial={{ opacity: 0, x: 30 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -30 }}
-                transition={{ duration: 0.3 }}
-                className={`quiz-question-box ${animClass}`}
-            >
-              {quiz.type === 'choice' ? renderChoices() : renderBlank()}
-              {showResult && renderResult()}
-            </motion.div>
-          </AnimatePresence>
-
+          <AnimatedContainer keyId={quiz.id} className={`quiz-question-box ${animClass}`}>
+            {quiz.type === 'choice' ? renderChoices() : renderBlank()}
+            {showResult && renderResult()}
+          </AnimatedContainer>
         </div>
 
       </div>

@@ -9,7 +9,7 @@ export default function EmptyTutorial({onCreate}) {
                 1. 퀴즈 생성 <a href="https://chatgpt.com/g/g-68493cdaf5208191867bcc81fa3f017b-kwijeu-meikeo" target="_blank" rel="noreferrer" style={{color: '#2563eb'}}>GPTER
                 링크</a> 클릭
             </p>
-            <p style={{color: "white"}}>
+            <p className="text-gray-700 dark:text-gray-300 text-sm mb-2">
                 2. 가이드에 따라 json 형태로 퀴즈 생성
             </p>
             <p style={{color: "white"}}>
