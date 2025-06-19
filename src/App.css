@@ -95,7 +95,7 @@ body::-webkit-scrollbar {
 .main-container p {
     font-size: 1.2rem;
     margin-bottom: 2rem;
-    color: var(--text-main);
+    color: white;
 }
 
 .start-btn {
@@ -930,6 +930,11 @@ body::-webkit-scrollbar {
     pre {
         white-space: pre-wrap;
         word-break: break-word;
+    }
+    .main-container p {
+        font-size: 1.2rem;
+        margin-bottom: 2rem;
+        color: white;
     }
 }
 

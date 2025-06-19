@@ -11,6 +11,7 @@ import AuthHandler from "./components/AuthHandler.jsx";
 import WrongNoteList from "./components/WrongNoteList.jsx";
 import {CSSTransition, TransitionGroup} from 'react-transition-group'
 import AppLayout from "./layouts/AppLayout.jsx";
+import EmptyTutorial from "./components/EmptyTutorial.jsx";
 
 
 function App() {
@@ -24,14 +25,13 @@ function App() {
                 <div className="main-content" style={{width: '100%'}}>
                     <Routes>
                         <Route element={<AppLayout/>}>
-
-
                             <Route path="/" element={<QuizSelectPage/>}/>
                             <Route path="/login" element={<SigninPage/>}/>
                             <Route path="/signup" element={<SignupPage/>}/>
                             <Route path="/quiz/:quizId" element={<QuizSolvePage/>}/>
                             <Route path="/create" element={<QuizCreatePage/>}/>
                             <Route path="/wrong-notes" element={<WrongNoteList/>}/>
+                            <Route path="/empty" element={<EmptyTutorial/>}/>
 
                         </Route>
                     </Routes>
